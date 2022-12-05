@@ -7,11 +7,11 @@ import Search from '../components/Search';
 export default function Home() {
 
   const [search, setSearch] = useState<string | null>();
-  const debouncedSearch = useDebounce(search, 450);
+  const debouncedSearch = useDebounce(search, 400);
 
-  const { data: stops, isError, error, refetch } = useQuery(
+  const { data: stops, isError, isLoading, error, refetch } = useQuery(
     // Specifying the query key for each debounced query to cache them separately
-    ['todo-list', debouncedSearch],
+    ['list', debouncedSearch],
     () => {
       return API.get(`/locations?query=${debouncedSearch}&fuzzy=false&results=20&stops=true&addresses=false&poi=false&linesOfStops=false&language=en`)
     }, {
@@ -29,6 +29,7 @@ export default function Home() {
   if (isError) {
     return <div>Error: {error?.message}</div>
   }
+
 
 
   return (
